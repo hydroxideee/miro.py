@@ -1,4 +1,5 @@
 import miro
 
 class Widget:
-    pass
+    def __init__(self, data: dict):
+        pass

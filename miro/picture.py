@@ -1,4 +1,5 @@
 import miro
 
 class Picture:
-    pass
+    def __init__(self, data: dict):
+        pass

@@ -1,5 +1,6 @@
 class User:
-    pass
+    def __init__(self, data: dict):
+        pass
 
 class TeamUser(User):
     pass
