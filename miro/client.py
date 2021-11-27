@@ -2,6 +2,7 @@ import requests
 import miro
 from . import team, user
 
+
 class Client:
     def __init__(self,access_token: str):
         self.access_headers = {

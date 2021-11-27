@@ -11,17 +11,25 @@ class UserState(str,Enum):
     def __repr__(self) -> str:
         return self.value
 
+
 class User(base.MiroObject):
     def __init__(self, data: dict, client):
         super().__init__(data.get("id"), client, base.MiroObjectType.USER)
         self.name = data.get("name")
-        pass
+
+    def __repr__(self):
+        attrs = ("name", "id")
+        resolved = [f"{attr}={getattr(self, attr)}" for attr in attrs]
+        return f"<User {' '.join(resolved)}>"
+
 
 class TeamUser(User):
     pass
 
+
 class BoardUser(User):
     pass
+
 
 class FullUser(User):
     def __init__(self, data: dict, client):
@@ -33,3 +41,8 @@ class FullUser(User):
         self.email = data.get("email")
         self.state = UserState(data.get("state"))
         self.picture = picture.Picture(data.get("picture"),self)
+
+    def __repr__(self):
+        attrs = ("name", "id", "company", "role")
+        resolved = [f"{attr}={getattr(self, attr)}" for attr in attrs]
+        return f"<FullUser {' '.join(resolved)}>"

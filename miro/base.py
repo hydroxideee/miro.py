@@ -1,6 +1,7 @@
 from typing import Type
 from enum import Enum
 
+
 class MiroObjectType(str,Enum):
     TEAM = "team"
     BOARD = "board"
@@ -10,6 +11,7 @@ class MiroObjectType(str,Enum):
 
     def __repr__(self) -> str:
         return self.value
+
 
 class MiroObject:
     def __init__(self,object_id: int | str, client, object_type: MiroObjectType):
