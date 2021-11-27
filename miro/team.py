@@ -12,12 +12,12 @@ class Team(base.MiroObject):
         self.modified_by = user.User(data.get("modifiedBy"),client)
         self.name = data.get("name")
         self.picture = picture.Picture(data.get("picture"),self)
-        self.team_users = self.get_team_users()
+        self.users = self.get_team_users()
 
     def __repr__(self) -> str:
         attrs = ("name", "id")
         resolved = [f"{attr}={getattr(self, attr)}" for attr in attrs]
-        resolved.append(f"team_user_count={len(self.team_users)}")
+        resolved.append(f"user_count={len(self.users)}")
         return f"<Team {' '.join(resolved)}>"
 
     def get_team_users(self) -> List[user.TeamUser]:
