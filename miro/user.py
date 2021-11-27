@@ -43,6 +43,6 @@ class FullUser(User):
         self.picture = picture.Picture(data.get("picture"),self)
 
     def __repr__(self):
-        attrs = ("name", "id", "company", "role")
+        attrs = ("name", "id", "state" "company", "role")
         resolved = [f"{attr}={getattr(self, attr)}" for attr in attrs]
         return f"<FullUser {' '.join(resolved)}>"
