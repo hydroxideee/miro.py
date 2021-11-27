@@ -1,6 +1,6 @@
 import requests
 import miro
-from . import team
+from . import team, user
 
 class Client:
     def __init__(self,access_token: str):
@@ -44,3 +44,12 @@ class Client:
 
     def get_team(self,team_id: int | str) -> team.Team:
         return miro.Team(self.get_request("/teams/{id}",id=team_id),client=self)
+
+    def get_user(self,user_id: int | str) -> user.FullUser:
+        return user.FullUser(self.get_request("/users/{id}",id=user_id),client=self)
+
+    def get_current_user(self) -> user.FullUser:
+        return user.FullUser(self.get_request("/users/me"),client=self)
+
+    def update_current_user(self,name: str) -> user.FullUser:
+        return user.FullUser(self.patch_request("/users/me",data={"name":name}), client=self)
