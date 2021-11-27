@@ -3,7 +3,7 @@ from . import user, board, picture
 from typing import List
 
 class Team:
-    def __init__(self,data: dict, client: miro.Client):
+    def __init__(self,data: dict, client):
         self.id = data.get("id")
         self.created_at = miro.utils.parse_date(data.get("createdAt",""))
         self.modified_at = miro.utils.parse_date(data.get("modifiedAt",""))
