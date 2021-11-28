@@ -11,6 +11,23 @@ class BoardSharingPolicy(str,Enum):
         return self.value
 
 
+class BoardRole(str,Enum):
+    VIEWER = "viewer"
+    COMMENTER = "commenter"
+    EDITOR = "editor"
+
+    def __repr__(self) -> str:
+        return self.value
+
+
+class TeamInvitationStrategy(str,Enum):
+    INVITE_WHEN_REQUIRED = "invite_when_required"
+    OFF = "off"
+
+    def __repr__(self) -> str:
+        return self.value
+
+
 class UserState(str,Enum):
     REGISTERED = "registered"
     NOT_REGISTERED = "not_registered"
