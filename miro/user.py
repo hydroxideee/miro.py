@@ -33,10 +33,10 @@ class User(base.MiroObject):
 
 
 class TeamUser(base.MiroObject):
-    def __init__(self, data: dict, client):
+    def __init__(self, data: dict, client, team=None):
         super().__init__(data.get("id"), client, base.MiroObjectType.TEAM_USER)
         self.user = User(data.get("user"), client)
-        self.team = client.team
+        self.team = team or client.team
         self.role = TeamUserRole(data.get("role"))
         self.created_at = miro.utils.parse_date(data.get("createdAt", ""))
         self.modified_at = miro.utils.parse_date(data.get("modifiedAt", ""))

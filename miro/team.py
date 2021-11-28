@@ -21,7 +21,7 @@ class Team(base.MiroObject):
         return f"<Team {' '.join(resolved)}>"
 
     def get_team_users(self) -> List[user.TeamUser]:
-        return [user.TeamUser(data, client=self.client) for data in self.client.get_request("/teams/{id}/user-connections",id=self.id)["data"]]
+        return [user.TeamUser(data, client=self.client, team=self) for data in self.client.get_request("/teams/{id}/user-connections",id=self.id)["data"]]
 
     def get_current_user(self) -> user.TeamUser:
         return user.TeamUser(self.client.get_request("/teams/{id}/user-connections/me".format(id=self.id))["data"], client=self.client)
