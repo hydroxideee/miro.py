@@ -1,5 +1,5 @@
 import miro
-from . import user, base, picture, enums
+from . import user, base, picture, enums, board
 from typing import List
 
 
@@ -11,8 +11,12 @@ class Team(base.MiroObject):
         self.created_by = user.User(data.get("createdBy"),client)
         self.modified_by = user.User(data.get("modifiedBy"),client)
         self.name = data.get("name")
-        self.picture = picture.Picture(data.get("picture"),self)
+        if picture_data := data.get("picture"):
+            self.picture = picture.Picture(picture_data, self)
+        else:
+            self.picture = None
         self.users = self.get_team_users()
+        self.boards = self.get_team_boards()
 
     def __repr__(self) -> str:
         attrs = ("name", "id")
@@ -22,6 +26,9 @@ class Team(base.MiroObject):
 
     def get_team_users(self) -> List[user.TeamUser]:
         return [user.TeamUser(data, client=self.client, team=self) for data in self.client.get_request("/teams/{id}/user-connections",id=self.id)["data"]]
+
+    def get_team_boards(self) -> List[board.Board]:
+        return [board.Board(data, client=self.client, team=self) for data in self.client.get_request("/teams/{id}/boards",id=self.id)["data"]]
 
     def get_current_user(self) -> user.TeamUser:
         return user.TeamUser(self.client.get_request("/teams/{id}/user-connections/me".format(id=self.id))["data"], client=self.client)

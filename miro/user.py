@@ -44,7 +44,10 @@ class FullUser(User):
         self.industry = data.get("industry",None)
         self.email = data.get("email")
         self.state = enums.UserState(data.get("state"))
-        self.picture = picture.Picture(data.get("picture"),self)
+        if picture_data := data.get("picture"):
+            self.picture = picture.Picture(picture_data, self)
+        else:
+            self.picture = None
 
     def __repr__(self):
         attrs = ("name", "id", "state", "company", "role")
