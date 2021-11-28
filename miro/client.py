@@ -54,3 +54,13 @@ class Client:
 
     def update_current_user(self, name: str) -> user.FullUser:
         return user.FullUser(self.patch_request("/users/me", data={"name": name}), client=self)
+
+    def get_team_user(self, team_user_id: int | str) -> user.TeamUser:
+        return user.TeamUser(self.get_request("/team-user-connections/{id}", id=team_user_id), client=self)
+
+    def update_team_user(self, team_user_id: int | str, role: user.TeamUserRole) -> user.TeamUser:
+        return user.TeamUser(self.patch_request("/team-user-connections/{id}", id=team_user_id, data={"role": role}),
+                             client=self)
+
+    def delete_team_user(self, team_user_id: int | str) -> None:
+        self.delete_request("/team-user-connections/{id}", id=team_user_id)

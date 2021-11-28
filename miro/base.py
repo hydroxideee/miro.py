@@ -7,6 +7,8 @@ class MiroObjectType(str,Enum):
     BOARD = "board"
     WIDGET = "widget"
     USER = "user"
+    TEAM_USER = "team-user-connection"
+    BOARD_USER = "board-user-connection"
     PICTURE = "picture"
 
     def __repr__(self) -> str:
