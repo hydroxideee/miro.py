@@ -1,12 +1,14 @@
 import requests
 import miro
-from . import team, user, enums
+from . import team, user, enums, board
 
 
 class Client:
     def __init__(self, access_token: str):
         self.access_headers = {
-            "Authorization": f"Bearer {access_token}"}
+            "Authorization": f"Bearer {access_token}",
+            'Accept': 'application/json'
+        }
         self.base_url = "https://api.miro.com/v1"
         data = self.get_request("/oauth-token")
         self.team = self.get_team(data["team"]["id"])
@@ -27,15 +29,21 @@ class Client:
         data = r_json.get("data")
         while next_url := r_json.get("nextLink", None):
             r = requests.request(method=method, url=next_url,
-                                 headers=self.access_headers if not headers else headers.update(self.access_headers))
+                                 headers=headers)
             r_json = r.json()
             data.extend(r_json.get("data"))
         return data
 
     def request(self, method: str, url: str, headers: dict = None, data: dict = None, **url_values) -> dict:
+        if not headers:
+            headers = self.access_headers
+        else:
+            headers.update(self.access_headers)
+        if data:
+            headers.update({'Content-type': 'application/json'})
         response = requests.request(method=method, url=self.base_url + url.format(**url_values),
-                                    headers=self.access_headers if not headers else headers.update(self.access_headers),
-                                    data=data)
+                                    headers=headers,
+                                    json=data)
         if not response.ok:
             raise miro.HTTPException(response)
         r_json = response.json()
@@ -44,7 +52,10 @@ class Client:
         return r_json
 
     def get_team(self, team_id: int | str) -> team.Team:
-        return miro.Team(self.get_request("/teams/{id}", id=team_id), client=self)
+        return team.Team(self.get_request("/teams/{id}", id=team_id), client=self)
+
+    def get_board(self, board_id: str) -> board.Board:
+        return board.Board(self.get_request("/boards/{id}", id=board_id), client=self)
 
     def get_user(self, user_id: int | str) -> user.FullUser:
         return user.FullUser(self.get_request("/users/{id}", id=user_id), client=self)
