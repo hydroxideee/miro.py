@@ -1,12 +1,12 @@
 import miro
 import io
 import requests
-from . import base
+from . import base, enums
 
 
 class Picture(base.MiroObject):
     def __init__(self, data: dict, parent):
-        super().__init__(data.get("id").lstrip("Optional[").rstrip("]"), parent.client, base.MiroObjectType.PICTURE)
+        super().__init__(data.get("id").lstrip("Optional[").rstrip("]"), parent.client, enums.MiroObjectType.PICTURE)
         self.parent = parent
         self.url = data.get("imageUrl")
 

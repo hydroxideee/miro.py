@@ -1,6 +1,6 @@
 import requests
 import miro
-from . import team, user
+from . import team, user, enums
 
 
 class Client:
@@ -58,7 +58,7 @@ class Client:
     def get_team_user(self, team_user_id: int | str) -> user.TeamUser:
         return user.TeamUser(self.get_request("/team-user-connections/{id}", id=team_user_id), client=self)
 
-    def update_team_user(self, team_user_id: int | str, role: user.TeamUserRole) -> user.TeamUser:
+    def update_team_user(self, team_user_id: int | str, role: enums.TeamUserRole) -> user.TeamUser:
         return user.TeamUser(self.patch_request("/team-user-connections/{id}", id=team_user_id, data={"role": role}),
                              client=self)
 

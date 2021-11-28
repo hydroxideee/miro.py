@@ -1,29 +1,10 @@
 import miro
-from . import base, picture
-from enum import Enum
-
-class UserState(str,Enum):
-    REGISTERED = "registered"
-    NOT_REGISTERED = "not_registered"
-    TEMPORARY = "temporary"
-    DELETED = "deleted"
-
-    def __repr__(self) -> str:
-        return self.value
-
-
-class TeamUserRole(str,Enum):
-    NON_TEAM = "non_team"
-    MEMBER = "member"
-    ADMIN = "admin"
-
-    def __repr__(self) -> str:
-        return self.value
+from . import base, picture, enums
 
 
 class User(base.MiroObject):
     def __init__(self, data: dict, client):
-        super().__init__(data.get("id"), client, base.MiroObjectType.USER)
+        super().__init__(data.get("id"), client, enums.MiroObjectType.USER)
         self.name = data.get("name")
 
     def __repr__(self):
@@ -34,11 +15,11 @@ class User(base.MiroObject):
 
 class TeamUser(base.MiroObject):
     def __init__(self, data: dict, client, team=None):
-        super().__init__(data.get("id"), client, base.MiroObjectType.TEAM_USER)
+        super().__init__(data.get("id"), client, enums.MiroObjectType.TEAM_USER)
         self.user = User(data.get("user"), client)
         self.name = self.user.name
         self.team = team or client.team
-        self.role = TeamUserRole(data.get("role"))
+        self.role = enums.TeamUserRole(data.get("role"))
         self.created_at = miro.utils.parse_date(data.get("createdAt", ""))
         self.modified_at = miro.utils.parse_date(data.get("modifiedAt", ""))
         self.created_by = User(data.get("createdBy"), client)
@@ -62,7 +43,7 @@ class FullUser(User):
         self.role = data.get("role")
         self.industry = data.get("industry",None)
         self.email = data.get("email")
-        self.state = UserState(data.get("state"))
+        self.state = enums.UserState(data.get("state"))
         self.picture = picture.Picture(data.get("picture"),self)
 
     def __repr__(self):

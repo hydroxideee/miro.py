@@ -1,11 +1,11 @@
 import miro
-from . import user, base, picture
+from . import user, base, picture, enums
 from typing import List
 
 
 class Team(base.MiroObject):
     def __init__(self,data: dict, client):
-        super().__init__(data.get("id"),client,base.MiroObjectType.TEAM)
+        super().__init__(data.get("id"),client,enums.MiroObjectType.TEAM)
         self.created_at = miro.utils.parse_date(data.get("createdAt",""))
         self.modified_at = miro.utils.parse_date(data.get("modifiedAt",""))
         self.created_by = user.User(data.get("createdBy"),client)

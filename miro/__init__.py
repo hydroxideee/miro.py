@@ -10,4 +10,4 @@ from .team import Team
 from .user import User,TeamUser,BoardUser
 from .picture import Picture
 from .widget import Widget
-from . import utils
+from . import utils, enums
